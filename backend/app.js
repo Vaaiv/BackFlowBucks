@@ -25,12 +25,12 @@ app.use(express.json())
 // read form data
 app.use(express.urlencoded({ extended: true }))
 
-// routes — uncomment as we build
-// app.use('/api/auth', authRoutes)
-// app.use('/api/cards', cardRoutes)
-// app.use('/api/chat', chatRoutes)
+// routes
+const authRoutes = require('./routes/authRoutes')
+app.use('/api/auth', authRoutes)
 
 // error handler — always last
-// app.use(errorMiddleware)
+const errorMiddleware = require('./middleware/errorMiddleware')
+app.use(errorMiddleware)
 
 module.exports = app
