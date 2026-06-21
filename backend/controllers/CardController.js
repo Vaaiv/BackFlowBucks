@@ -1,4 +1,5 @@
 const { prisma } = require('../config/db')
+const { clearCardsCache } = require('../services/cardService')
 
 // add a new card
 const addCard = async (req, res) => {
@@ -14,6 +15,9 @@ const addCard = async (req, res) => {
         rewards
       }
     })
+
+    // clear cache so next request gets fresh data
+    await clearCardsCache(req.user.id)
 
     res.status(201).json({ message: 'Card added successfully', card })
 
@@ -46,6 +50,9 @@ const updateCard = async (req, res) => {
       data: { name, bank, categories, rewards }
     })
 
+    // clear cache
+    await clearCardsCache(req.user.id)
+
     res.status(200).json({ message: 'Card updated', card })
 
   } catch (error) {
@@ -59,6 +66,9 @@ const deleteCard = async (req, res) => {
     await prisma.card.delete({
       where: { id: req.params.id }
     })
+
+    // clear cache
+    await clearCardsCache(req.user.id)
 
     res.status(200).json({ message: 'Card deleted' })
 
