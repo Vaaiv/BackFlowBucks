@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          
+      - name: Install dependencies
+        working-directory: backend
+        run: npm install
+        
+      - name: Run tests
+        working-directory: backend
+        run: npm test
+        env:
+          DATABASE_URL: "postgresql://postgres.hsvvegwbexbpguddlvon:BackFlow123@@aws-1-us-west-2.pooler.supabase.com:6543/postgres?pgbouncer=true"
+          DIRECT_URL: "postgresql://postgres.hsvvegwbexbpguddlvon:BackFlow123@@aws-1-us-west-2.pooler.supabase.com:5432/postgres"
+          SUPABASE_URL: "https://hsvvegwbexbpguddlvon.supabase.co"
+          SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzdnZlZ3diZXhicGd1ZGRsdm9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTY0NzYsImV4cCI6MjA5NzUzMjQ3Nn0.hHCerL8o2svS-a12F4fO9mM3TrPida_Sd_BPNJif9QQ"
+          SUPABASE_SERVICE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzdnZlZ3diZXhicGd1ZGRsdm9uIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk1NjQ3NiwiZXhwIjoyMDk3NTMyNDc2fQ.hRiR94WPlDGtIPqx-oMVVlEv1CV0jMScQ12uFayFd3M"
+          GEMINI_API_KEY: "AQ.Ab8RN6J7-PYQdb8pxXb4M1GRc1WlkeCbJSmZt44n-ZMxmGxnBQ"
+          REDIS_URL: "redis://default:2VuiLIk2u02MawoNcun6inICRt2isWv7@flowers-shoe-microsteady-14802.db.redis.io:14207"
+          JWT_SECRET: "backflowbucks_secret_key_2026"
+          GOOGLE_PLACES_API_KEY: "AIzaSyC07lKXyynMyaZzdidbUAwkzxmGV-JNdxQ"
+          FIREBASE_PROJECT_ID: "gen-lang-client-0557016105"
+          FIREBASE_CLIENT_EMAIL: "firebase-adminsdk-fbsvc@gen-lang-client-0557016105.iam.gserviceaccount.com"
+          FIREBASE_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC+wo9/MbyYt6sY
+QdUAWz6m3e7jA1i48d8dX00qoPUTN7HUKRGeDBUwG3evFggfF8rTq/lJSj5Xrir2
+agJZ+MZvqYNtm5oqY1mwb1IOM4MmsJY5+x1ClWEtd+VuLSF6a9Xa1HuRU42EB5G7
+BXPCRv9xMG45/C9AAmHsFT7JB8wdvks2nrfYgeqm4tmTG9DVY3GJl0jXRbto8USB
+ITJaI4ESKnp+6rYvjAVP4DapxRe5xBicr6UkJicW9sPo+E9Bcl7qg9dBT+OjD1ar
+xBdsPIOan09uvqosY6LL0LEkbvU+NBqbg22zFv0f6A6rQ0i294+IRfgLhjZatnHM
+ukDJgls7AgMBAAECggEAF+DLzIyhwm4PNSicbIB/bazPJ8x18SSZnJge1SyzsLWi
+hV+krGdvyYdOqnR0DMxSH7/hovpvplMPXqvzYmbBFB4gbPpyyEaKZgrxNwTcsF2f
+WF+mEH0ZXnMpHWr5y1SvPsalNxJB3xqBc+shS9rOQ9FfotN96KHDtyULqGdY9gny
+E7PIcnoYAxCm0Wvxr+oE/PBS/uZH7iSBPbJYLaFMWiRLj/AukDF+Guswa8Ywyyw9
+6aW2E2/Uox65G1g6jVFtYOtXs2kQmcUfMZjuGbw2RtNbaKReqXIDY/YmvlmqEhNY
+V9XFqPBHcL9Ikl7Th174qIul+W3pFunHubDshVVXYQKBgQDhSnU9tFSv+kY6BANm
+SnsBhrrpAmbsox1owdYLrV3xqFGOxGd0JPtlrf7XiPzh01ortLVh3JTaFQweOyli
+W1i3r4qJRocWqSEwGJ6tzj7ma87L6HmTkoQWJTrRD0u6kRsABfxKebo+qhTZdNTM
+oGw7JIFAI3BzpeDUBe4bm+tKIQKBgQDYwyVWbu4JeQXarUN6MmqWBYjqWU0AiI5l
+pCA7GaKgHFOaAgOb50TceLnOoQE83QEF69/e+m3FLx+E3Q9CmuzVw3p6mLnqPLxc
+weuczkXDKN2U9ANrxL69wSP/XeHS0IEN4Kc3vE4sqgKpm18Gcz4D8IusP6c2SLWE
+NDeg2xXR2wKBgQDBUjBK06x8GYobjIgSRcVJqQBIpDwHwWyiEPsIqCreDG530Qdp
+PbbQKL9u2mkNq1xL9tRSdoLwpHDynBfGA9acQLDjXTbcdiM5b1byk/GbrlUU2pdA
+z9AyZJ4U+UglfxCpM3mrusrbrP0ZIMzeDqbxFUEn9YEwa94CclhBLsl3oQKBgQCf
+iHCwfpA+9I10dlTVWMnNhGFSaUsc+2QiNntqQ+HHCVIWZSkW002BHnFSPHlWvCmG
+nCV2TMYBfD8sYC5dDP0GDwrTtBgQ54aSlj68d6wsiKUcfcMOzAy+R6ogxo3vxHlX
+J2KqyLKYeL/g6HM1ohegeqexrF96umSt2miewN/8RQKBgHjGO/BugGy3/iIvPypv
+1Q4N2OW4rPt7Pu5vMa+LHPfNfdDWM0laLJFUbexJU0a/P0JvM/sXW5OYF1AcLRDa
+AehjZSr/famtP5mTQhjya84AmM5Xi9Ik8ydz4mDhgfR3mGmfJ7iZ3vQHYSlve0YU
+2zwSsx+DOpq1AlotpGCaRCt0
+-----END PRIVATE KEY-----"  
