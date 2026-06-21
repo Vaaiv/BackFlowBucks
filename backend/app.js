@@ -5,6 +5,8 @@ const rateLimit = require('express-rate-limit')
 const cardRoutes = require('./routes/cardRoutes')
 const cookieParser = require('cookie-parser')
 const chatRoutes = require('./routes/chatRoutes')
+const locationRoutes = require('./routes/locationRoutes')
+
 
 
 
@@ -45,5 +47,7 @@ app.use(errorMiddleware)
 app.use('/api/cards', cardRoutes)
 
 app.use('/api/chat', chatRoutes)
+
+app.use('/api/location', locationRoutes)
 
 module.exports = app
