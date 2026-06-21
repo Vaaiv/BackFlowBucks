@@ -14,4 +14,17 @@ model User {
   email     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  cards     Card[]
+}
+
+model Card {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  name       String
+  bank       String
+  categories Json
+  rewards    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

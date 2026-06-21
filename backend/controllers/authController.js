@@ -42,7 +42,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body
 
-    // sign in with Supabase
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -50,10 +49,23 @@ const login = async (req, res) => {
 
     if (error) throw error
 
+    // store token in httpOnly cookie
+    res.cookie('access_token', data.session.access_token, {
+      httpOnly: true,   // JS cannot access
+      secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
+      sameSite: 'strict', // prevents CSRF
+      maxAge: 60 * 60 * 1000 // 1 hour
+    })
+
+    res.cookie('refresh_token', data.session.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    })
+
     res.status(200).json({
       message: 'Login successful',
-      access_token: data.session.access_token,
-      refresh_token: data.session.refresh_token,
       user: {
         id: data.user.id,
         email: data.user.email,
