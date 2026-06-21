@@ -2,17 +2,19 @@ const express = require('express')
 const router = express.Router()
 const { register, login, logout } = require('../controllers/authController')
 const { protect } = require('../middleware/authMiddleware')
+const { registerValidation, loginValidation } = require('../middleware/authValidation')
+const { validate } = require('../middleware/validateMiddleware')
 
-// register new user
-router.post('/register', register)
+// register with validation
+router.post('/register', registerValidation, validate, register)
 
-// login user
-router.post('/login', login)
+// login with validation
+router.post('/login', loginValidation, validate, login)
 
-// logout user
+// logout
 router.post('/logout', logout)
 
-// test protected route
+// protected test route
 router.get('/me', protect, async (req, res) => {
   res.json({ message: 'Protected route works!', user: req.user })
 })
