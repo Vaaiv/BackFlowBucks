@@ -15,6 +15,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   cards     Card[]
+  chats     Chat[]
 }
 
 model Card {
@@ -27,4 +28,13 @@ model Card {
   rewards    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Chat {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  userMessage    String
+  recommendation String
+  createdAt      DateTime @default(now())
 }
